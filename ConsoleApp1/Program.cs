@@ -12,21 +12,25 @@ namespace ConsoleApp1
             var product = new ProductHeaderValue("MyAmazingApps");
             var github = new GitHubClient(product);
             var connection = new Connection(product);
-            
-            Task task = new Task(() => ListUserRepos(github, connection));
+
+            Console.Write("Nickname:");
+
+            string nickname = Console.ReadLine();
+
+            Task task = new Task(() => ListUserRepos(github, connection, nickname));
             task.Start();
             Console.ReadLine();
         }
 
-        private static async void ListUserRepos(GitHubClient client, Connection connect)
+        private static async void ListUserRepos(GitHubClient client, Connection connect, string nickname)
         {
-            User githubUser = await client.User.Get("shurik409");
+            User githubUser = await client.User.Get(nickname);
             
             IReadOnlyList<Repository> githubUserRepos = await client.Repository.GetAllForUser(githubUser.Login);
 
             foreach(Repository r in githubUserRepos)
             {
-                Console.WriteLine(r.Id + r.Name + r.Size );
+                Console.WriteLine(r.Name);
                 Task task = new Task(() => testGitApi(r.Id, connect));
                 task.Start();
                 
