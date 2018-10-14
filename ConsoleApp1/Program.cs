@@ -9,6 +9,13 @@ namespace ConsoleApp1
     {
         static void Main(string[] args)
         {
+            Class1 test = new Class1();
+            test.TestLibGit();
+
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.WriteLine();
+
             var product = new ProductHeaderValue("MyAmazingApps");
             var github = new GitHubClient(product);
             var connection = new Connection(product);
@@ -28,12 +35,32 @@ namespace ConsoleApp1
             
             IReadOnlyList<Repository> githubUserRepos = await client.Repository.GetAllForUser(githubUser.Login);
 
-            foreach(Repository r in githubUserRepos)
+            
+            var apiConnect = new ApiConnection(connect);
+            RepositoryCommitsClient clients = new RepositoryCommitsClient(apiConnect);
+            
+            foreach (Repository r in githubUserRepos)
             {
-                Console.WriteLine(r.Name);
-                Task task = new Task(() => testGitApi(r.Id, connect));
-                task.Start();
+                Console.WriteLine(r.Name + "/n");
+
+
                 
+
+/*
+                try
+                {
+                    IReadOnlyList<Octokit.GitHubCommit> repCommit = await clients.GetAll(r.Id);
+                    foreach (GitHubCommit c in repCommit)
+                    {
+                        Console.WriteLine(c.Commit.Message);
+                    }
+                }
+                catch (Exception)
+                {
+                    Console.WriteLine("NULL");
+                }
+                */
+
             }
 
             
@@ -42,22 +69,8 @@ namespace ConsoleApp1
 
         private static async void testGitApi(long id, Connection connect)
         {
-            var rep = new Repository(id);
-            var apiConnect = new ApiConnection(connect);
-            RepositoryCommitsClient clients = new RepositoryCommitsClient(apiConnect);
             //Console.WriteLine("\n" + rep.Name + "\n");
-            try
-            {
-                IReadOnlyList<Octokit.GitHubCommit> repCommit = await clients.GetAll(id);
-                foreach (GitHubCommit c in repCommit)
-                {
-                    Console.WriteLine(c.Commit.Message);
-                }
-            }
-            catch (Exception)
-            {
-                Console.WriteLine("NULL");
-            }
+            
 
             
         }
