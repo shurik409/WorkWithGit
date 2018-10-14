@@ -9,10 +9,11 @@ namespace ConsoleApp1
     {
         static void Main(string[] args)
         {
-            Class1 test = new Class1();
-            test.TestLibGit();
+            Work work = new Work();
+            work.WorkWithRepo();
+            Console.ReadLine();
 
-            Console.WriteLine();
+            /* Console.WriteLine();
             Console.WriteLine();
             Console.WriteLine();
 
@@ -20,16 +21,15 @@ namespace ConsoleApp1
             var github = new GitHubClient(product);
             var connection = new Connection(product);
 
-            Console.Write("Nickname:");
+           Console.Write("Nickname:");
 
             string nickname = Console.ReadLine();
 
             Task task = new Task(() => ListUserRepos(github, connection, nickname));
-            task.Start();
-            Console.ReadLine();
+            task.Start();*/
         }
 
-        private static async void ListUserRepos(GitHubClient client, Connection connect, string nickname)
+        /*private static async void ListUserRepos(GitHubClient client, Connection connect, string nickname)
         {
             User githubUser = await client.User.Get(nickname);
             
@@ -59,20 +59,12 @@ namespace ConsoleApp1
                 {
                     Console.WriteLine("NULL");
                 }
-                */
 
             }
 
             
             
-        }
-
-        private static async void testGitApi(long id, Connection connect)
-        {
-            //Console.WriteLine("\n" + rep.Name + "\n");
-            
-
-            
-        }
+        }*/
+        
     }
 }
