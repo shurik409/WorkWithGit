@@ -13,7 +13,7 @@ namespace ConsoleApp1
         {
             var temp = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString());
 
-            string path = Repository.Clone("https://github.com/shurik409/practice-front", temp, new CloneOptions { OnTransferProgress = Work.TransferProgress});
+            string path = Repository.Clone("https://github.com/shurik409/petya", temp, new CloneOptions { OnTransferProgress = Work.TransferProgress});
 
             var repo = new Repository(path);
 
@@ -33,12 +33,12 @@ namespace ConsoleApp1
         {
             var commits = repo.Commits.Reverse<Commit>();
             var diff = repo.Diff;
-            Commit previous = commits.First<Commit>();
+            Tree previous = null;
             List<File> files = new List<File> { } ;
             foreach (Commit c in commits)
             {
                 //Console.WriteLine(c.Message);
-                foreach (TreeEntryChanges change in diff.Compare<TreeChanges>(previous.Tree, c.Tree))
+                foreach (TreeEntryChanges change in diff.Compare<TreeChanges>(previous, c.Tree))
                 {
                     //Console.WriteLine("{0}:{1}", change.Status, change.Path);
                     if (findFile(change.Path, files) != null)
@@ -51,7 +51,7 @@ namespace ConsoleApp1
                             findFile(change.Path, files).increase();
                     }
                 }
-                previous = c;
+                previous = c.Tree;
             }
             Console.WriteLine();
             foreach (File file in files)
